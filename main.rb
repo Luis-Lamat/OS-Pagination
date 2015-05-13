@@ -15,11 +15,12 @@ def parse_action(input)
   parametros = Hash.new   
   case letra
     when "P"
-      parametros = {"n" => input[1], "p"=> input[2]}
+      parametros = {"bytes" => input[1], "id_proceso"=> input[2]}
     when "A"
-      parametros = {"d" => input[1], "m"=> input[2], "p"=> input[3]}
+      parametros = {"direccion" => input[1], "id_proceso"=> input[2], 
+                    "bitM"=> input[3]}
     when "L"
-      parametros = {"p"=> input[1]}
+      parametros = {"id_proceso"=> input[1]}
     when "E"
       puts "Exit"
   end

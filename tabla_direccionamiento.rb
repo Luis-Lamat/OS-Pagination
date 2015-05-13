@@ -6,7 +6,7 @@ class TablaDireccionamiento
 		# index
 	
 	def	initialize()
-		@registros = Array.new(256)		
+		@registros = Array.new(256)
 	end
 	
 	def insertar(id_proceso, pagina, indice)
@@ -14,12 +14,14 @@ class TablaDireccionamiento
 	end
 	
 	def self.localizar(dir_virtual, id_proceso)
-#		pagina = dir_virtual.to_i / 8
-		for(i in 0..255)
-			if @registros[i]["pid"] == id_proceso && @registros[i]["index"] == pagina
-			return i * 8   
+		pagina = dir_virtual.to_i / 8
+		@registros.each do |registro|
+			if registro["pid"] == id_proceso && registro["index"] == pagina
+				return i * 8
 			else
-			return nil
+				return nil
+			end
 		end
 	end
+
 end

@@ -16,7 +16,7 @@ class Administrador
     numero_de_marcos: 512    
   })
 
-  def self.poner_en_memoria(id_proceso, bytes)
+  def self.poner_en_memoria(opciones)
     # tratar de poner el proceso en memoria real
     # si no funciona:
     # => hacer swapping (checar si se ha modificado)
@@ -24,16 +24,16 @@ class Administrador
     # => dejarlo ahi y copiarlo a virtual
   end
   
-  def self.accesar(dir_virtual, id_proceso)
+  def self.accesar(opciones)
     # localizar donde esta la pagina que contiene
-#    pagina = dir_virtual.to_i / 8
-      direccion = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
-      return direccion unless direccion == -1
-      return TablaDireccionamiento.actualizar(dir_virtual, id_proceso)     
+    # pagina = dir_virtual.to_i / 8
+    dir_virtual = opciones["direccion"]
+    id_proceso  = opciones["id_proceso"]
+    direccion   = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
+    return direccion unless direccion == -1
+    return TablaDireccionamiento.actualizar(dir_virtual, id_proceso)     
     # esta en memoria secundaria?
     #    page fault
     #    poner_en_memoria
-    
-        
   end
 end
