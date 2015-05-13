@@ -1,20 +1,28 @@
+
+# TODO: doc
 class Pagina
 
-  attr_accessor :id         # id de la pagina actual
+  attr_accessor :id         # id del proceso
+  attr_accessor :index      # numero de pagina (indice de marco)
   attr_accessor :bitM       # bit de modificacion
   attr_accessor :timestamp  # tiempo de llegada
-  attr_accessor :twin_id # marco de memoria virtual
 
   # (void) initialize
   # 
-  # inicializa el objeto de pagina con 
-  # los valores pasados
+  # inicializador del objeto pagina. Incluye el id de la pagina 
+  # y el bit de modificacion, asi como el timestamp cuando se
+  # crea el objeto en el tiempo actual
   # 
-  def initialize(id, twin_id, bitM)
+  def initialize(id, index)
     @id        = id
-    @twin_id   = twin_id
-    @bitM      = bitM
+    @index     = index
+    @bit_m     = false
     @timestamp = Time.now
+  end
+
+  # Hace que se modifique la pagina
+  def modificar
+    bit_m = true
   end
 
 end

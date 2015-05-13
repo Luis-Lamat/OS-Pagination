@@ -1,17 +1,31 @@
-# TODO Doc
+require_relative "pagina"
+
+# TODO: doc
 class Memoria
 
-  def initialize
-    @marcos_reales    = Array.new(256, -1)
-    @marcos_virtuales = Array.new(512, -1)
+  def initialize(hash)
+    @marcos_libres = hash[:numero_de_marcos]
+    @bytes_pagina  = hash[:bytes_por_pagina]
+    @marcos        = Array.new(@marcos_libres, -1)
   end
 
-  def real(index)
-    @marcos_reales[index]
-  end
+  private
 
-  def virtual(index)
-    @marcos_reales[index]
-  end
+    # (int) marcos_necesarios
+    # 
+    # Regresa la cantidad de marcos necesarios para un proceso
+    # que ocupa 'n' bytes, dependiendo del tamaño de pagina
+    # 
+    def marcos_necesarios(bytes)
+      return (bytes.to_f / @bytes_pagina).ceil
+    end
+
+    def caben(bytes)
+      return marcos_necesarios(bytes) < @marcos_libres
+    end
+
+    def esta_disponible?(marco)
+      return marco != -1
+    end
 
 end
