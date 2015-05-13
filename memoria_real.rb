@@ -1,3 +1,4 @@
+require_relative "memoria"
 
 # TODO: doc
 class MemoriaReal < Memoria

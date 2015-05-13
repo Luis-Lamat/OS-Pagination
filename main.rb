@@ -3,29 +3,27 @@ require_relative "administrador"
 # hash que tiene las acciones permitidas y como valor el tamaño maximo
 # de su input, es decir, de sus caracteres de entrada
 @acciones = {"P" => 3, "A" => 4, "L" => 2, "F" => 1, "E" => 1}
-@metodos = {"P" => "poner_en_memoria", "A" => "asignar", "L" => "borrar", 
-            "F" => "fin", "E" => "exit"}
-
-def get_input
-  print "Ingrese los datos (Accion tamaño id): "
-  gets.chomp
-end
+@metodos  = {"P" => "poner_en_memoria", "A" => "asignar", "L" => "borrar", 
+             "F" => "fin", "E" => "exit"}
 
 def parse_action(input)
   input = input.split
-  return false unless @acciones.include? input[0]
-  return false unless @acciones[input[0]] == input.size
-  accion = @metodos[input[0]]
+  letra = input[0]
+  print input
+  print " " + input.size.to_s
+  return false unless @acciones.include? letra
+  return false unless @acciones[letra] == input.size  
+  accion = @metodos[letra]
   parametros = Hash.new   
-  case input[0]
+  case letra
     when "P"
-     parametros = {"n" => input[1], "p"=> input[2]}
+      parametros = {"n" => input[1], "p"=> input[2]}
     when "A"
-     parametros = {"d" => input[1], "m"=> input[2], "p"=> input[3]}
+      parametros = {"d" => input[1], "m"=> input[2], "p"=> input[3]}
     when "L"
-     parametros = {"p"=> input[1]}
-    else
-    puts "Exit"
+      parametros = {"p"=> input[1]}
+    when "E"
+      puts "Exit"
   end
   datos = Hash.new
   datos[accion] = parametros
@@ -34,15 +32,19 @@ end
 
 #------------------------------------ MAIN ------------------------------------#
 
-input = get_input
-
-while input != "salir"
-
-  accion = parse_action(input)  
-  #  Administrador.send(accion)  
-  # este metodo se encarga de ver la disponibilidad de los marcos
-  # Administrador.asignar(id, num_marcos, accion)
-  puts accion
-
-  input = get_input
+input_file = File.open("input.txt", "r")
+if input_file
+  input_file.each do |line|
+    print line.chomp
+    print " = "
+    accion = parse_action(line.chomp)
+    puts
+  end
+else
+  puts "No encontré el archivo..."
 end
+input_file.close
+  
+#  Administrador.send(accion)  
+# este metodo se encarga de ver la disponibilidad de los marcos
+# Administrador.asignar(id, num_marcos, accion)
