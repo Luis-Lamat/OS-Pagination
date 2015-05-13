@@ -9,8 +9,6 @@ require_relative "administrador"
 def parse_action(input)
   input = input.split
   letra = input[0]
-  print input
-  print " " + input.size.to_s
   return false unless @acciones.include? letra
   return false unless @acciones[letra] == input.size  
   accion = @metodos[letra]
@@ -32,13 +30,15 @@ end
 
 #------------------------------------ MAIN ------------------------------------#
 
-input_file = File.open("input.txt", "r")
+input_file = File.new("input.txt", "r")
 if input_file
-  input_file.each do |line|
-    print line.chomp
-    print " = "
+  input_file.each_with_index do |line, i|
+    line[0] = '' if i == 0 # arregla bug
     accion = parse_action(line.chomp)
-    puts
+    print "Administrador." + accion.keys.first + "(" 
+    print accion.values.first
+    print ")\n"
+    Administrador.send(accion.keys.first, accion.values.first)
   end
 else
   puts "No encontré el archivo..."
