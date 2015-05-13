@@ -24,10 +24,6 @@ def get_input
   gets.chomp
 end
 
-def size_restriction(char)
-  
-end
-
 def parse_action(input)
   input = input.split
   return false unless @acciones.include? input[0]
@@ -39,11 +35,11 @@ end
 
 input = get_input
 
-while input != "exit"
+while input != "salir"
 
   accion = parse_action(input)
 
-  puts accion
+  @memoria_real.poner_proceso(1, 2048);
 
   # este metodo se encarga de ver la disponibilidad de los marcos
   # Administrador.asignar(id, num_marcos, accion)

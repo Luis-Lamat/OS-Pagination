@@ -7,7 +7,7 @@ class Administrador
   def self.poner_en_memoria(id_proceso, bytes)
     # tratar de poner el proceso en memoria real
     # si no funciona:
-    # => hacer swapping
+    # => hacer swapping (checar si se ha modificado)
     # si funciona:
     # => dejarlo ahi y copiarlo a virtual
   end

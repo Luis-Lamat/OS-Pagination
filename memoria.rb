@@ -21,11 +21,11 @@ class Memoria
     end
 
     def caben(bytes)
-      return marcos_necesarios(bytes) < @marcos_libres
+      return marcos_necesarios(bytes) <= @marcos_libres
     end
 
     def esta_disponible?(marco)
-      return marco != -1
+      return marco == -1
     end
 
 end
