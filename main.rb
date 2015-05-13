@@ -1,24 +1,10 @@
-require_relative "memoria"
-require_relative "memoria_real"
-require_relative "memoria_virtual"
 require_relative "administrador"
-
-# inicializacion de la memoria real
-@memoria_real = MemoriaReal.new({ 
-  bytes_por_pagina: 8,
-  numero_de_marcos: 256
-})
-
-# inicializacion de la memoria virtual
-@memoria_virtual = MemoriaVirtual.new({
-  bytes_por_pagina: 8,
-  numero_de_marcos: 512    
-})
 
 # hash que tiene las acciones permitidas y como valor el tamaño maximo
 # de su input, es decir, de sus caracteres de entrada
 @acciones = {"P" => 3, "A" => 4, "L" => 2, "F" => 1, "E" => 1}
-@metodos = {"P" => "poner_en_memoria", "A" => "asignar", "L" => "borrar", "F" => "fin", "E" => "exit"}
+@metodos = {"P" => "poner_en_memoria", "A" => "asignar", "L" => "borrar", 
+            "F" => "fin", "E" => "exit"}
 
 def get_input
   print "Ingrese los datos (Accion tamaño id): "
