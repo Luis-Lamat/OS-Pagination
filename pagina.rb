@@ -2,7 +2,7 @@
 # TODO: doc
 class Pagina
 
-  attr_accessor :id         # id del proceso
+  attr_accessor :pid        # id del proceso
   attr_accessor :index      # numero de pagina (indice de marco)
   attr_accessor :bitM       # bit de modificacion
   attr_accessor :timestamp  # tiempo de llegada
@@ -13,8 +13,8 @@ class Pagina
   # y el bit de modificacion, asi como el timestamp cuando se
   # crea el objeto en el tiempo actual
   # 
-  def initialize(id, index)
-    @id        = id
+  def initialize(pid, index)
+    @pid       = pid
     @index     = index
     @bit_m     = false
     @timestamp = Time.now
