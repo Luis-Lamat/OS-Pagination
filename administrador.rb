@@ -7,6 +7,8 @@ require_relative "tabla_direccionamiento"
 class Administrador
 
   @page_faults = Hash.new(0)
+  @swap_ins    = Hash.new(0)
+  @swap_outs   = Hash.new(0)
 
   # inicializacion de la memoria real
   @memoria_real = MemoriaReal.new({ 
@@ -28,13 +30,7 @@ class Administrador
     # => dejarlo ahi y copiarlo a virtual
     bytes      = opciones["bytes"].to_i
     id_proceso = opciones["id_proceso"].to_i
-
     respuesta  = @memoria_real.poner_proceso(id_proceso, bytes)
-    # if respuesta.kind_of? Array
-    #   @page_faults[id_proceso] = respuesta.size
-    # else
-    #   # poner algo mas
-    # end
     print @memoria_real.inspect
   end
   
@@ -54,8 +50,8 @@ class Administrador
   end
 
   def self.hacer_reporte(opciones)
-    id_proceso = opciones["id_proceso"]
-
+    print @swap_ins.inspect
+    print @swap_outs.inspect
     # TODO: hacer
   end
 
@@ -101,6 +97,14 @@ class Administrador
       end
     end
     return pagina_a_reemplazar
+  end
+
+  def self.agregar_swap_in(id_proceso)
+    @swap_ins[id_proceso] += 1
+  end
+
+  def self.agregar_swap_out(id_proceso)
+    @swap_outs[id_proceso] += 1
   end
 
 end

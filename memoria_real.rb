@@ -41,12 +41,15 @@ class MemoriaReal < Memoria
     # puts "entre con pid: #{id_proceso} y pagina #{id_pagina_a_poner}"
     p_info = Administrador.find_first_in
     puts p_info
-    TablaDireccionamiento.borrar_pagina(p_info["id_proceso"], p_info["id_pagina"])
+    TablaDireccionamiento.borrar_pagina(p_info["id_proceso"], 
+                                        p_info["id_pagina"])
     @marcos.each_with_index do |marco, i|
       unless esta_disponible?(marco)
         if marco.pid == p_info["id_proceso"] && marco.index == p_info["id_pagina"]
           @marcos[i] = Pagina.new(id_proceso, id_pagina_a_poner)
           TablaDireccionamiento.insertar(id_proceso, id_pagina_a_poner, i)
+          Administrador.agregar_swap_in(id_proceso)
+          Administrador.agregar_swap_out(p_info["id_proceso"])
           return
         end
       end
