@@ -13,6 +13,14 @@ class TablaDireccionamiento
 		@registros[a] =  {"pid"=>id_proceso, "pagina"=>pagina}
 	end
 	
+#	def	first_in()
+#		lowest_time = Time.now
+#		id = -1
+#		@registros.each do |registro|
+#			registro.
+#		end
+#	end
+	
 	def self.localizar(dir_virtual, id_proceso)
 		pagina = dir_virtual.to_i / 8
 		@registros.each do |registro|
