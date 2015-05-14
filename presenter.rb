@@ -2,15 +2,17 @@ require_relative "administrador"
 
 class Presenter
 
+  # imprime todos los page faults de los procesos
   def self.print_page_faults
     page_faults = Administrador.get_page_faults
     puts "Page faults:"
     page_faults.each do |k,v|
-      print "Proceso #{k}: #{v}"
+      print "Proceso #{k}: #{v}\n"
     end
-    puts
+    puts # este comando imprime un newline char
   end
 
+  # imprime todos swap_ins y swap_outs de los procesos
   def self.print_swaps
     swap_ins  = Administrador.get_swap_ins
     swap_outs = Administrador.get_swap_outs
@@ -28,11 +30,13 @@ class Presenter
     puts
   end
 
+  # imprime todos los turnarounds de los procesos y el promedio
   def self.print_turnaround_times
     puts "implementar..."
     puts
   end
 
+  # hace el reporte de "F", llama a las demas funciones
   def self.hacer_reporte
     puts "REPORTE:\n"
     puts "-------------------"

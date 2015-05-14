@@ -6,6 +6,9 @@ require_relative "administrador"
 @metodos  = {"P" => "poner_en_memoria", "A" => "accesar", "L" => "borrar", 
              "F" => "hacer_reporte", "E" => "terminar"}
 
+
+# Revisa un arreglo de strings y revisa que sean números
+# válidos con una expresión regular
 def are_integers(array)
   array.each do |element|
     return false unless /\A\d+\z/ === element
@@ -13,6 +16,10 @@ def are_integers(array)
   return true
 end
 
+
+# Recibe como parámetro el input del usuario y analiza lo que el sistema tiene 
+# que hacer, ya sea: poner en memoria, accesar, borrar, hacer un reporte, o 
+# terminar. Valida que el input esté correcto
 def parse_action(input)
   input   = input.split
   letra   = input[0]
@@ -20,7 +27,7 @@ def parse_action(input)
   return false unless @acciones[letra] == input.size  
 
   accion = @metodos[letra]
-  parametros = Hash.new   
+  parametros = Hash.new  # este es el hash con los parámetros de la acción
   case letra
     when "P"
       return false unless are_integers([input[1], input[2]])
@@ -42,12 +49,17 @@ end
 
 #------------------------------------ MAIN ------------------------------------#
 
+# Se lee el archivo y se corren las funciones principales
 input_file = File.new("prueba.txt", "r")
 if input_file
   input_file.each_with_index do |line, i|
     # line[0] = '' if i == 0 # arregla bug
     accion = parse_action(line.chomp)
     if !!accion
+      # Esta línea manda a llamar el método adecuado de la clase administrador
+      # dependiendo de la acción parseada por parse_action.
+      # 'accion.values.first' con los parámetros de la función
+      # Esto es considerado 'metaprogramación', cuando código hace código
       Administrador.send(accion.keys.first, accion.values.first)
     else
       puts "Error en linea #{i+1}..."

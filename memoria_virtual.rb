@@ -3,13 +3,8 @@ require_relative "memoria"
 # TODO: doc
 class MemoriaVirtual < Memoria
 
-  # (bool) poner_proceso
-  #
-  # Funcion que pone un proceso en la memoria real. Regresa
-  # falso si ya no hay espacio
-  #
-  def poner_proceso(id, bytes) # TODO: terminarlo
-    # return false unless caben(bytes)
+  # Funcion que pone un proceso en la memoria real.
+  def poner_proceso(id, bytes)
     marcos_a_poner = marcos_necesarios(bytes)
     marcos_puestos = []
     id_counter = 0
