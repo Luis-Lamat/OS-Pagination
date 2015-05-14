@@ -23,15 +23,12 @@ class Administrador
   })
 
   def self.poner_en_memoria(opciones)
-    # tratar de poner el proceso en memoria real
-    # si no funciona:
-    # => hacer swapping (checar si se ha modificado)
-    # si funciona:
-    # => dejarlo ahi y copiarlo a virtual
     bytes      = opciones["bytes"].to_i
     id_proceso = opciones["id_proceso"].to_i
     respuesta  = @memoria_real.poner_proceso(id_proceso, bytes)
-    print @memoria_real.inspect
+    respuesta2 = @memoria_virtual.poner_proceso(id_proceso, bytes)
+    # print @memoria_real.inspect
+    print @memoria_virtual.inspect
   end
   
   def self.accesar(opciones)
