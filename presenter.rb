@@ -10,6 +10,8 @@ class Presenter
       page_faults.each do |k,v|
         print "Proceso #{k}: #{v}\n"
       end
+    else
+      puts "No hay..."
     end
     puts # este comando imprime un newline char
   end
@@ -48,7 +50,7 @@ class Presenter
 
   # hace el reporte de "F", llama a las demas funciones
   def self.hacer_reporte
-    puts "REPORTE:\n"
+    puts "Fin. Reporte de Salida:\n"
     puts "-------------------"
     print_page_faults
     print_turnaround_times

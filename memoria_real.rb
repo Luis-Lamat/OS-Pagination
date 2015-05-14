@@ -6,7 +6,7 @@ class MemoriaReal < Memoria
   # Funcion que pone un proceso en la memoria real. Regresa
   # falso si ya no hay espacio
   def poner_proceso(id, bytes) # TODO: terminarlo
-    # return false unless caben(bytes)
+    return false unless caben(bytes, 256)
     marcos_a_poner = marcos_necesarios(bytes)
     marcos_puestos = []
     id_counter = 0
@@ -25,7 +25,7 @@ class MemoriaReal < Memoria
 
     if @marcos_libres == 0 && marcos_a_poner > 0
       while marcos_a_poner > 0
-        swap(id, id_counter)
+        marcos_puestos.push(swap(id, id_counter))
         Administrador.aumentar_page_fault(id)
         marcos_a_poner -= 1
         id_counter += 1
@@ -45,8 +45,6 @@ class MemoriaReal < Memoria
     end
     swap(id_proceso, indice_pagina) 
   end
-
-
   
 
   # TODO: numero de swaps por proceso
@@ -64,13 +62,12 @@ class MemoriaReal < Memoria
           TablaDireccionamiento.borrar_pagina(p_info["id_proceso"], 
                                         p_info["id_pagina"])
           TablaDireccionamiento.insertar_real(id_proceso, id_pagina_a_poner, i)
-
-
           Administrador.agregar_swap_in(id_proceso)
           Administrador.agregar_swap_out(p_info["id_proceso"])
-          return
+          return i
         end
       end
     end
+
   end
 end

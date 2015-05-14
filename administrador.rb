@@ -54,21 +54,27 @@ class Administrador
     dir_virtual = opciones["direccion"].to_i
     id_proceso  = opciones["id_proceso"].to_i
     pagina      = (dir_virtual.to_f / 8).floor 
-    # TablaDireccionamiento.desplegar_virtual
     direccion_virtual = TablaDireccionamiento.localizar_vir(id_proceso, pagina)
-    # TablaDireccionamiento.print
-    direccion   = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
-    puts "Direccion Real: #{direccion}, Direccion Virtual: #{direccion_virtual}"
+    direccion_real    = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
+    offset      = direccion_virtual - pagina
+    if direccion_virtual % 8 < offset
+      puts "Dirección inválida para ese proceso..."
+      return false
+    end
     # @memoria_virtual.desplegar
-    return direccion unless direccion == nil      
+    return direccion_real unless direccion_real == nil      
     aumentar_page_fault(id_proceso)
     @memoria_real.poner_pagina(id_proceso, pagina)
     direccion_real = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
+    puts "Direccion Real: #{direccion_real+offset}, Direccion Virtual: #{direccion_virtual+offset}"
   end
 
   # accion de 'F' para imprimir el reporte final
   def self.hacer_reporte(opciones)
+    quedan = checar_procesos_cargados
+    imprime_los_que quedan unless quedan.empty?
     Presenter.hacer_reporte
+    reset_memorias
   end
 
   def self.borrar(opciones)
@@ -103,15 +109,49 @@ class Administrador
     return pagina_a_reemplazar
   end
 
+  def self.checar_procesos_cargados
+    sobras = []
+    @memoria_real.marcos.each do |marco|
+      unless marco == -1 
+        sobras.push(marco.pid) unless sobras.member?(marco.pid)
+      end
+    end
+    sobras
+  end
+
+  def self.imprime_los_que(quedan)
+    print "*ERROR* - Se quedaron los siguientes procesos en memoria: "
+    print quedan.inspect
+    puts
+  end
+
+  # se resetean todas las variables
+  def self.reset_memorias
+    @page_faults  = Hash.new(0)
+    @swap_ins     = Hash.new(0)
+    @swap_outs    = Hash.new(0)
+    @turn_arounds = Hash.new(0)
+
+    # inicializacion de la memoria real
+    @memoria_real = MemoriaReal.new({ 
+      bytes_por_pagina: 8,
+      numero_de_marcos: 256
+    })
+
+    # inicializacion de la memoria virtual
+    @memoria_virtual = MemoriaVirtual.new({
+      bytes_por_pagina: 8,
+      numero_de_marcos: 512    
+    })
+  end
+
   # aumenta los swap_ins de ese proceso
   def self.agregar_swap_in(id_proceso)
-    puts "Agrege SwIn a #{id_proceso}"
     @swap_ins[id_proceso] += 1
   end
 
   # aumenta los swap_outs de ese proceso
   def self.agregar_swap_out(id_proceso)
-    puts "Agrege SwOut a #{id_proceso}"
     @swap_outs[id_proceso] += 1
   end
 

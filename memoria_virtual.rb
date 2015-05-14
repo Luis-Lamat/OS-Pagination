@@ -3,7 +3,7 @@ require_relative "memoria"
 # TODO: doc
 class MemoriaVirtual < Memoria
 
-  # Funcion que pone un proceso en la memoria real.
+  # Funcion que pone un proceso en la memoria virtual.
   def poner_proceso(id, bytes)
     marcos_a_poner = marcos_necesarios(bytes)
     marcos_puestos = []
@@ -22,5 +22,4 @@ class MemoriaVirtual < Memoria
 
     return marcos_puestos
   end
-
 end
