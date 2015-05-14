@@ -10,7 +10,7 @@ class TablaDireccionamiento
 	end
 	
 	def insertar(id_proceso, pagina, indice)
-		@registros[indice] =  {"pid"=>id_proceso, "pagina"=>pagina}
+		@registros[a] =  {"pid"=>id_proceso, "pagina"=>pagina}
 	end
 	
 	def self.localizar(dir_virtual, id_proceso)
@@ -22,6 +22,15 @@ class TablaDireccionamiento
 				return nil
 			end
 		end
+	end
+	#busca proceso
+	def self.borradorP(id_proceso)
+		#@registros.each_with_index do |registro,i| 
+		#	if registro["pid"] == id_proceso
+		#		registros[i] == -1
+		#	end
+		#end
+		#return lista
 	end
 
 end

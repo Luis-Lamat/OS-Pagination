@@ -1,5 +1,7 @@
 require_relative "memoria_real"
 require_relative "memoria_virtual"
+require_relative "tabla_direccionamiento"
+
 
 # TODO: doc, page faults
 class Administrador
@@ -46,11 +48,26 @@ class Administrador
   end
 
   def self.hacer_reporte(opciones)
+    id_proceso = opciones["id_proceso"]
+
     # TODO: hacer
   end
 
   def self.borrar(opciones)
-    # TODO: hacer
+
+    id_proceso = opciones["id_proceso"]
+    #busca y borra proceso de memoria virtual
+    @memoria_virtual.marcos.each_with_index do |marco, i|
+      @memoria_virtual.marcos[i] =-1 if marco == id_proceso
+    end
+    #busca y borra proceso de memoria real
+    @memoria_real.marcos.each do |marco|
+      @memoria_virtual.marcos=-1 if marco == id_proceso
+    end
+
+    #manda a llamar un metodo de la clase tablaS
+    TablaDireccionamiento.borradorP(id_proceso)
+
   end
 
   def self.accesar(opciones)

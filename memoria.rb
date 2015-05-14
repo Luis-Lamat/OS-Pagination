@@ -9,6 +9,11 @@ class Memoria
     @marcos        = Array.new(@marcos_libres, -1)
   end
 
+
+def marcos
+  return  @marcos 
+end
+
   private
 
     # (int) marcos_necesarios
