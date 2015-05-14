@@ -26,14 +26,16 @@ class Administrador
     # => hacer swapping (checar si se ha modificado)
     # si funciona:
     # => dejarlo ahi y copiarlo a virtual
-    # bytes      = opciones["bytes"].to_i
-    # id_proceso = opciones["id_proceso"].to_i
-    # respuesta  = @memoria_real.poner_proceso(id_proceso, bytes)
+    bytes      = opciones["bytes"].to_i
+    id_proceso = opciones["id_proceso"].to_i
+
+    respuesta  = @memoria_real.poner_proceso(id_proceso, bytes)
     # if respuesta.kind_of? Array
     #   @page_faults[id_proceso] = respuesta.size
     # else
     #   # poner algo mas
     # end
+    print @memoria_real.inspect
   end
   
   def self.accesar(opciones)
@@ -82,15 +84,23 @@ class Administrador
     # TODO: hacer
   end
   
-  def self.find_first_in()
+  def self.find_first_in
   	lowest_time = Time.now
 		id = -1
-    @memoria_real.each_with_index do |marco, i|
-      pagina = marco unless marco == -1
-      if pagina.timestamp < lowest_time
-      lowest_time = pagina.timestamp
-      id = pagina.pid
+    pagina_a_reemplazar = {}
+    @memoria_real.marcos.each_with_index do |marco, i|
+      unless marco == -1
+        pagina = marco
+        if pagina.timestamp < lowest_time
+          lowest_time = pagina.timestamp
+          id_proceso = pagina.pid
+          id_pagina = i
+          pagina_a_reemplazar = {"id_proceso" => id_proceso,
+                                 "id_pagina"  => id_pagina}
+        end
       end
     end
+    return pagina_a_reemplazar
   end
+
 end

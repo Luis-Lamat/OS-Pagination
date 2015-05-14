@@ -31,10 +31,10 @@ end
 
 #------------------------------------ MAIN ------------------------------------#
 
-input_file = File.new("input.txt", "r")
+input_file = File.new("prueba.txt", "r")
 if input_file
   input_file.each_with_index do |line, i|
-    line[0] = '' if i == 0 # arregla bug
+    # line[0] = '' if i == 0 # arregla bug
     accion = parse_action(line.chomp)
     if !!accion
       puts accion

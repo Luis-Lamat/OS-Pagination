@@ -1,4 +1,6 @@
 require_relative "pagina"
+require_relative "tabla_direccionamiento"
+require_relative "administrador"
 
 # TODO: doc
 class Memoria
