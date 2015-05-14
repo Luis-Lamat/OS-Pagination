@@ -3,8 +3,8 @@ require_relative "administrador"
 # hash que tiene las acciones permitidas y como valor el tamaño maximo
 # de su input, es decir, de sus caracteres de entrada
 @acciones = {"P" => 3, "A" => 4, "L" => 2, "F" => 1, "E" => 1}
-@metodos  = {"P" => "poner_en_memoria", "A" => "asignar", "L" => "borrar", 
-             "F" => "fin", "E" => "exit"}
+@metodos  = {"P" => "poner_en_memoria", "A" => "accesar", "L" => "borrar", 
+             "F" => "hacer_reporte", "E" => "exit"}
 
 def parse_action(input)
   input = input.split
@@ -36,16 +36,16 @@ if input_file
   input_file.each_with_index do |line, i|
     line[0] = '' if i == 0 # arregla bug
     accion = parse_action(line.chomp)
-    print "Administrador." + accion.keys.first + "(" 
-    print accion.values.first
-    print ")\n"
-    Administrador.send(accion.keys.first, accion.values.first)
+
+          print "Administrador." + accion.keys.first + "(" 
+          print accion.values.first
+          print ")\n"
+
+    if !!accion
+      Administrador.send(accion.keys.first, accion.values.first)
+    end
   end
 else
   puts "No encontré el archivo..."
 end
 input_file.close
-  
-#  Administrador.send(accion)  
-# este metodo se encarga de ver la disponibilidad de los marcos
-# Administrador.asignar(id, num_marcos, accion)

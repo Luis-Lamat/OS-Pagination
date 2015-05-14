@@ -31,9 +31,22 @@ class Administrador
     id_proceso  = opciones["id_proceso"]
     direccion   = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
     return direccion unless direccion == -1
-    return TablaDireccionamiento.actualizar(dir_virtual, id_proceso)     
+    return TablaDireccionamiento.actualizar(dir_virtual, id_proceso)
     # esta en memoria secundaria?
     #    page fault
     #    poner_en_memoria
   end
+
+  def self.hacer_reporte(opciones)
+    # TODO: hacer
+  end
+
+  def self.borrar(opciones)
+    # TODO: hacer
+  end
+
+  def self.accesar(opciones)
+    # TODO: hacer
+  end
+
 end
