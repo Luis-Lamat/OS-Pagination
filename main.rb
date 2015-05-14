@@ -6,20 +6,31 @@ require_relative "administrador"
 @metodos  = {"P" => "poner_en_memoria", "A" => "accesar", "L" => "borrar", 
              "F" => "hacer_reporte", "E" => "terminar"}
 
+def are_integers(array)
+  array.each do |element|
+    return false unless /\A\d+\z/ === element
+  end
+  return true
+end
+
 def parse_action(input)
-  input = input.split
-  letra = input[0]
+  input   = input.split
+  letra   = input[0]
   return false unless @acciones.include? letra
   return false unless @acciones[letra] == input.size  
+
   accion = @metodos[letra]
   parametros = Hash.new   
   case letra
     when "P"
+      return false unless are_integers([input[1], input[2]])
       parametros = {"bytes" => input[1], "id_proceso"=> input[2]}
     when "A"
+      return false unless are_integers([input[1], input[2], input[3]])
       parametros = {"direccion" => input[1], "id_proceso"=> input[2], 
                     "bitM"=> input[3]}
     when "L"
+      return false unless are_integers([input[1]])
       parametros = {"id_proceso"=> input[1]}
     when "E"
       puts "Exit"
@@ -37,7 +48,6 @@ if input_file
     # line[0] = '' if i == 0 # arregla bug
     accion = parse_action(line.chomp)
     if !!accion
-      puts accion
       Administrador.send(accion.keys.first, accion.values.first)
     else
       puts "Error en linea #{i+1}..."

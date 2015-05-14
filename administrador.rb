@@ -1,5 +1,6 @@
 require_relative "memoria_real"
 require_relative "memoria_virtual"
+require_relative "presenter"
 require_relative "tabla_direccionamiento"
 
 
@@ -28,7 +29,7 @@ class Administrador
     respuesta  = @memoria_real.poner_proceso(id_proceso, bytes)
     respuesta2 = @memoria_virtual.poner_proceso(id_proceso, bytes)
     # print @memoria_real.inspect
-    print @memoria_virtual.inspect
+    # print @memoria_virtual.inspect
   end
   
   def self.accesar(opciones)
@@ -47,9 +48,7 @@ class Administrador
   end
 
   def self.hacer_reporte(opciones)
-    print @swap_ins.inspect
-    print @swap_outs.inspect
-    # TODO: hacer
+    Presenter.hacer_reporte
   end
 
   def self.borrar(opciones)
@@ -102,6 +101,18 @@ class Administrador
 
   def self.agregar_swap_out(id_proceso)
     @swap_outs[id_proceso] += 1
+  end
+
+  def self.get_swap_ins
+    @swap_ins
+  end
+
+  def self.get_swap_outs
+    @swap_outs
+  end
+
+  def self.get_page_faults
+    @page_faults
   end
 
 end
