@@ -11,6 +11,7 @@ class Administrador
   @page_faults  = Hash.new(0)
   @swap_ins     = Hash.new(0)
   @swap_outs    = Hash.new(0)
+  @llegadas     = Hash.new(0)
   @turn_arounds = Hash.new(0)
 
   # inicializacion de la memoria real
@@ -41,8 +42,10 @@ class Administrador
     respuesta  = @memoria_real.poner_proceso(id_proceso, bytes)
     respuesta2 = @memoria_virtual.poner_proceso(id_proceso, bytes)
 
+    @llegadas[id_proceso] = Time.now
+
     # imprime que procesos se pusieron
-    puts "Se asignaron los siguientes marcos al proceso #{id_proceso}:\n"
+    print "Se asignaron los siguientes marcos al proceso #{id_proceso}: "
     print respuesta.inspect
     puts
   end
@@ -82,6 +85,7 @@ class Administrador
     @memoria_virtual.limpiar(id_proceso)
     @memoria_real.limpiar(id_proceso)
     TablaDireccionamiento.limpiar(id_proceso)
+    @turn_arounds[id_proceso] = Time.now.to_f - @llegadas[id_proceso].to_f
   end
 
   # accion de 'E' de terminar el programa
@@ -174,4 +178,10 @@ class Administrador
   def self.aumentar_page_fault(id_proceso)
     @page_faults[id_proceso] += 1    
   end
+
+  # getter de page_faults totales
+  def self.get_turn_arounds
+    @turn_arounds
+  end
+
 end
