@@ -17,11 +17,15 @@ class Memoria
   end
 
 def limpiar(id_proceso)
+  marcos_liberados = []
   @marcos.each_with_index do |marco, i| 
     if marco.class.name == "Pagina" and marco.pid == id_proceso.to_i
       marcos[i] = -1
+      marcos_liberados << i
     end
   end
+  print marcos_liberados.inspect unless marcos_liberados.empty?
+  puts
 end
 
   def desplegar

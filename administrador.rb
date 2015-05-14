@@ -13,6 +13,7 @@ class Administrador
   @swap_outs    = Hash.new(0)
   @llegadas     = Hash.new(0)
   @turn_arounds = Hash.new(0)
+  @size         = Hash.new(0)
 
   # inicializacion de la memoria real
   @memoria_real = MemoriaReal.new({ 
@@ -31,6 +32,9 @@ class Administrador
   def self.poner_en_memoria(opciones)
     bytes      = opciones["bytes"].to_i
     id_proceso = opciones["id_proceso"].to_i
+
+    # pone el tamaño del proceso
+    @size[id_proceso] = bytes
 
     # si el proceso es demasiado grande, manda un error
     unless @memoria_real.caben(bytes, 256)
@@ -56,16 +60,24 @@ class Administrador
   def self.accesar(opciones)
     dir_virtual = opciones["direccion"].to_i
     id_proceso  = opciones["id_proceso"].to_i
+    se_modifica = opciones["bitM"] == 1
     pagina      = (dir_virtual.to_f / 8).floor 
     direccion_virtual = TablaDireccionamiento.localizar_vir(id_proceso, pagina)
     direccion_real    = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
-    offset      = direccion_virtual - pagina
-    if direccion_virtual % 8 < offset
+    offset      = dir_virtual % 8
+
+    @memoria_real.modificar(id_proceso) if se_modifica
+
+    if dir_virtual > @size[id_proceso]
       puts "Dirección inválida para ese proceso..."
       return false
     end
-    # @memoria_virtual.desplegar
-    return direccion_real unless direccion_real == nil      
+
+    unless direccion_real == nil
+      puts "Direccion Real: #{direccion_real+offset}, Direccion Virtual: #{direccion_virtual+offset}"
+      return direccion_real       
+    end
+
     aumentar_page_fault(id_proceso)
     @memoria_real.poner_pagina(id_proceso, pagina)
     direccion_real = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
@@ -81,11 +93,14 @@ class Administrador
   end
 
   def self.borrar(opciones)
-    id_proceso = opciones["id_proceso"]
+    id_proceso = opciones["id_proceso"].to_i
+    print "Marcos virtuales liberados del proceso #{id_proceso}: "
     @memoria_virtual.limpiar(id_proceso)
+    print "Marcos reales liberados del proceso #{id_proceso}: "
     @memoria_real.limpiar(id_proceso)
     TablaDireccionamiento.limpiar(id_proceso)
-    @turn_arounds[id_proceso] = Time.now.to_f - @llegadas[id_proceso].to_f
+    # puts "#{Time.now} - #{@llegadas[id_proceso]}: #{Time.now - @llegadas[id_proceso]} "
+    @turn_arounds[id_proceso] = Time.now - @llegadas[id_proceso]
   end
 
   # accion de 'E' de terminar el programa

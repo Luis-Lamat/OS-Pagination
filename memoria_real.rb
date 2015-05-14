@@ -58,7 +58,10 @@ class MemoriaReal < Memoria
           @marcos[i] = Pagina.new(id_proceso, id_pagina_a_poner)
           ubicacion_de_reemplazada = TablaDireccionamiento.localizar_vir(p_info['id_proceso'], p_info['id_pagina'])
 
-          puts "pagina #{p_info['id_pagina']} del proceso #{p_info['id_proceso']} se movio a la página virtual #{ubicacion_de_reemplazada / 8}"
+          if marco.bitM
+            puts "pagina #{p_info['id_pagina']} del proceso #{p_info['id_proceso']} se movio a la página virtual #{ubicacion_de_reemplazada / 8}"
+          end
+          
           TablaDireccionamiento.borrar_pagina(p_info["id_proceso"], 
                                         p_info["id_pagina"])
           TablaDireccionamiento.insertar_real(id_proceso, id_pagina_a_poner, i)
@@ -68,6 +71,14 @@ class MemoriaReal < Memoria
         end
       end
     end
-
   end
+
+  def modificar(id_proceso)
+    @marcos.each do |m|
+      if m != -1
+        marco.modificar if marco.pid = id_proceso
+      end
+    end
+  end
+
 end

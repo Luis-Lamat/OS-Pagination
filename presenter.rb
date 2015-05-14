@@ -49,7 +49,7 @@ class Presenter
     puts "Turnarounds"
     unless turn_arounds.empty?
       turn_arounds.each do |k,v|
-        puts "Proceso #{k}: #{v.to_i}"
+        puts "Proceso #{k}: #{v.to_f}"
       end      
     else
       puts "No hay..."
