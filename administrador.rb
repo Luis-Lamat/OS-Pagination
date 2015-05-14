@@ -22,6 +22,14 @@ class Administrador
     # => hacer swapping (checar si se ha modificado)
     # si funciona:
     # => dejarlo ahi y copiarlo a virtual
+    # bytes      = opciones["bytes"].to_i
+    # id_proceso = opciones["id_proceso"].to_i
+    # respuesta  = @memoria_real.poner_proceso(id_proceso, bytes)
+    # if respuesta.kind_of? Array
+    #   @page_faults[id_proceso] = respuesta.size
+    # else
+    #   # poner algo mas
+    # end
   end
   
   def self.accesar(opciones)
@@ -46,6 +54,10 @@ class Administrador
   end
 
   def self.accesar(opciones)
+    # TODO: hacer
+  end
+
+  def self.terminar(opciones)
     # TODO: hacer
   end
 

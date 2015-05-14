@@ -4,7 +4,7 @@ require_relative "administrador"
 # de su input, es decir, de sus caracteres de entrada
 @acciones = {"P" => 3, "A" => 4, "L" => 2, "F" => 1, "E" => 1}
 @metodos  = {"P" => "poner_en_memoria", "A" => "accesar", "L" => "borrar", 
-             "F" => "hacer_reporte", "E" => "exit"}
+             "F" => "hacer_reporte", "E" => "terminar"}
 
 def parse_action(input)
   input = input.split
@@ -36,13 +36,11 @@ if input_file
   input_file.each_with_index do |line, i|
     line[0] = '' if i == 0 # arregla bug
     accion = parse_action(line.chomp)
-
-          print "Administrador." + accion.keys.first + "(" 
-          print accion.values.first
-          print ")\n"
-
     if !!accion
+      puts accion
       Administrador.send(accion.keys.first, accion.values.first)
+    else
+      puts "Error en linea #{i+1}..."
     end
   end
 else
