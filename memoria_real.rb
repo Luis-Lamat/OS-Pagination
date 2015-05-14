@@ -46,11 +46,13 @@ class MemoriaReal < Memoria
     swap(id_proceso, indice_pagina) 
   end
 
+
+  
+
   # TODO: numero de swaps por proceso
   def swap(id_proceso, id_pagina_a_poner)
     # puts "entre con pid: #{id_proceso} y pagina #{id_pagina_a_poner}"
     p_info = Administrador.find_first_in
-    puts "swap #{p_info}: #{id_proceso}, #{id_pagina_a_poner}"
     TablaDireccionamiento.borrar_pagina(p_info["id_proceso"], 
                                         p_info["id_pagina"])
     @marcos.each_with_index do |marco, i|
