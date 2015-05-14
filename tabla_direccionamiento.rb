@@ -29,8 +29,12 @@ class TablaDireccionamiento
 	def self.print()
 		@registros_reales.each_with_index do |registro, i|
 			dir_real = i * 8
-			dir_vir = localizar_vir(registro["pid"], registro["pagina"])
-			puts "pid: #{registro['pid']}, pagina: #{registro['pagina']}, dir_real: #{dir_real}, dir_vir: #{dir_vir}"
+			if registro != nil
+				dir_vir = localizar_vir(registro["pid"], registro["pagina"])
+				puts "registro: #{i} :: pid: #{registro['pid']}, pagina: #{registro['pagina']}, dir_real: #{dir_real}, dir_vir: #{dir_vir}"
+			else
+				puts "registro: #{i} :: #{registro}"
+			end
 		end
 		
 	end
@@ -45,13 +49,22 @@ class TablaDireccionamiento
 		return nil		
 	end
 
-	def self.borradorP(id_proceso)
-		#@registros_reales.each_with_index do |registro,i| 
-		#	if registro["pid"] == id_proceso
-		#		registros[i] == -1
-		#	end
-		#end
-		#return lista
+	def self.limpiar(id_proceso)
+		@registros_reales.each_with_index do |registro, i|
+			if registro != nil
+				if registro["pid"] == id_proceso.to_i
+					@registros_reales[i] = nil
+				end
+			end
+		end
+
+		@registros_virtuales.each_with_index do |registro, i|
+			if registro != nil
+				if registro["pid"] == id_proceso
+					@registros_reales[i] = nil
+				end
+			end
+		end
 	end
 
 	def self.borrar_pagina(id_proceso, id_pagina)

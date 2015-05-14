@@ -38,10 +38,8 @@ class Administrador
     dir_virtual = opciones["direccion"].to_i
     id_proceso  = opciones["id_proceso"].to_i
     pagina      = (dir_virtual.to_f / 8).floor 
-    # puts "Accessar proceso: #{id_proceso}, dir_virtual: #{dir_virtual} pagina: #{pagina}"
     direccion   = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
     unless direccion == nil
-      # puts "direccion_real: #{direccion}"
       return direccion
     end
     aumentar_page_fault(id_proceso)
@@ -57,26 +55,22 @@ class Administrador
   end
 
   def self.borrar(opciones)
-
     id_proceso = opciones["id_proceso"]
-    #busca y borra proceso de memoria virtual
-    @memoria_virtual.marcos.each_with_index do |marco, i|
-      @memoria_virtual.marcos[i] =-1 if marco == id_proceso
-    end
-    #busca y borra proceso de memoria real
-    @memoria_real.marcos.each do |marco|
-      @memoria_virtual.marcos=-1 if marco == id_proceso
-    end
-
-    #manda a llamar un metodo de la clase tablaS
-    TablaDireccionamiento.borradorP(id_proceso)
-
+    @memoria_virtual.limpiar(id_proceso)
+    @memoria_real.limpiar(id_proceso)
+    TablaDireccionamiento.limpiar(id_proceso)
+    TablaDireccionamiento.print()
+    puts "@@@ Memorial Real"
+    @memoria_real.print
+    puts "@@@ Memorial Virtual"
+    @memoria_virtual.print
   end
 
 
   def self.terminar(opciones)
     # TODO: hacer
     # print "terminar"
+    # TablaDireccionamiento.print()
     puts "page faults: #{@page_faults.inspect}"
   end
   
@@ -118,9 +112,8 @@ class Administrador
   def self.get_page_faults
     @page_faults
   end
-  
+
   def self.aumentar_page_fault(id_proceso)
     @page_faults[id_proceso] += 1    
   end
-
 end

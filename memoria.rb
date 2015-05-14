@@ -16,6 +16,24 @@ def marcos
   return  @marcos 
 end
 
+def limpiar(id_proceso)
+  @marcos.each_with_index do |marco, i| 
+    if marco.class.name == "Pagina" and marco.pid == id_proceso.to_i
+      marcos[i] = -1
+    end
+  end
+end
+
+def print
+    @marcos.each_with_index do |marco, i|
+      if marco.class.name == "Pagina"
+        puts "#{i}: #{marco.pid}"        
+      else
+        puts "#{i}:"
+      end
+    end
+  end
+
   private
 
     # (int) marcos_necesarios
@@ -34,5 +52,6 @@ end
     def esta_disponible?(marco)
       return marco == -1
     end
+    
 
 end
