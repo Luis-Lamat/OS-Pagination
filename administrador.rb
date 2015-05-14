@@ -34,17 +34,22 @@ class Administrador
   
   def self.accesar(opciones)
     # localizar donde esta la pagina que contiene
-    # pagina = dir_virtual.to_i / 8
-    dir_virtual = opciones["direccion"]
-    id_proceso  = opciones["id_proceso"]
+#     pagina = (dir_virtual.to_f / 8).floor
+    dir_virtual = opciones["direccion"].to_i
+    id_proceso  = opciones["id_proceso"].to_i
+    pagina      = (dir_virtual.to_f / 8).floor 
+    # puts "Accessar proceso: #{id_proceso}, dir_virtual: #{dir_virtual} pagina: #{pagina}"
     direccion   = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
-    return direccion unless direccion == -1
-    return TablaDireccionamiento.actualizar(dir_virtual, id_proceso)
-    page_faults[id_proceso] += 1
-    # esta en memoria secundaria?
-    #    page fault
-    #    poner_en_memoria
-    return TablaDireccionamiento.actualizar(dir_virtual, id_proceso)     
+    unless direccion == nil
+      # puts "direccion_real: #{direccion}"
+      return direccion
+    end
+    aumentar_page_fault(id_proceso)
+    direccion_virtual = TablaDireccionamiento.localizar(id_proceso, pagina)
+    @memoria_real.poner_pagina(id_proceso, pagina)
+    direccion_real =  TablaDireccionamiento.localizar(dir_virtual, id_proceso)     
+    # TablaDireccionamiento.print()
+    # puts "direccion real: #{direccion_real}, direccion s: #{direccion_virtual}"
   end
 
   def self.hacer_reporte(opciones)
@@ -68,12 +73,11 @@ class Administrador
 
   end
 
-  def self.accesar(opciones)
-    # TODO: hacer
-  end
 
   def self.terminar(opciones)
     # TODO: hacer
+    # print "terminar"
+    puts "page faults: #{@page_faults.inspect}"
   end
   
   def self.find_first_in
@@ -113,6 +117,10 @@ class Administrador
 
   def self.get_page_faults
     @page_faults
+  end
+  
+  def self.aumentar_page_fault(id_proceso)
+    @page_faults[id_proceso] += 1    
   end
 
 end
