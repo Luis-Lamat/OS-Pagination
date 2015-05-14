@@ -24,7 +24,7 @@ def limpiar(id_proceso)
   end
 end
 
-def print
+  def desplegar
     @marcos.each_with_index do |marco, i|
       if marco.class.name == "Pagina"
         puts "#{i}: #{marco.pid}"        
@@ -34,24 +34,21 @@ def print
     end
   end
 
-  private
+  # Regresa la cantidad de marcos necesarios para un proceso
+  # que ocupa 'n' bytes, dependiendo del tamaño de pagina 
+  def marcos_necesarios(bytes)
+    return (bytes.to_f / @bytes_pagina).ceil
+  end
 
-    # Regresa la cantidad de marcos necesarios para un proceso
-    # que ocupa 'n' bytes, dependiendo del tamaño de pagina 
-    def marcos_necesarios(bytes)
-      return (bytes.to_f / @bytes_pagina).ceil
-    end
+  # Regresa si la cantidad de bytes a poner caben con el total
+  # de marcos disponibles, en este caso 256
+  def caben(bytes, marcos_totales)
+    return marcos_necesarios(bytes) <= marcos_totales
+  end
 
-    # Regresa si la cantidad de bytes a poner caben con el total
-    # de marcos disponibles, en este caso 256
-    def caben(bytes, marcos_totales)
-      return marcos_necesarios(bytes) <= marcos_totales
-    end
-
-    # regresa true si el marco esta disponible
-    def esta_disponible?(marco)
-      return marco == -1
-    end
-    
+  # regresa true si el marco esta disponible
+  def esta_disponible?(marco)
+    return marco == -1
+  end
 
 end

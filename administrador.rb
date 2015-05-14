@@ -8,9 +8,10 @@ require_relative "tabla_direccionamiento"
 class Administrador
 
   # variables globales para la clase
-  @page_faults = Hash.new(0)
-  @swap_ins    = Hash.new(0)
-  @swap_outs   = Hash.new(0)
+  @page_faults  = Hash.new(0)
+  @swap_ins     = Hash.new(0)
+  @swap_outs    = Hash.new(0)
+  @turn_arounds = Hash.new(0)
 
   # inicializacion de la memoria real
   @memoria_real = MemoriaReal.new({ 
@@ -39,6 +40,11 @@ class Administrador
     # continua poniendo en memoria si el proceso si cabe
     respuesta  = @memoria_real.poner_proceso(id_proceso, bytes)
     respuesta2 = @memoria_virtual.poner_proceso(id_proceso, bytes)
+
+    # imprime que procesos se pusieron
+    puts "Se asignaron los siguientes marcos al proceso #{id_proceso}:\n"
+    print respuesta.inspect
+    puts
   end
   
   # accion para accesar al marco de página de un proceso
@@ -48,10 +54,14 @@ class Administrador
     dir_virtual = opciones["direccion"].to_i
     id_proceso  = opciones["id_proceso"].to_i
     pagina      = (dir_virtual.to_f / 8).floor 
+    # TablaDireccionamiento.desplegar_virtual
+    direccion_virtual = TablaDireccionamiento.localizar_vir(id_proceso, pagina)
+    # TablaDireccionamiento.print
     direccion   = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
+    puts "Direccion Real: #{direccion}, Direccion Virtual: #{direccion_virtual}"
+    # @memoria_virtual.desplegar
     return direccion unless direccion == nil      
     aumentar_page_fault(id_proceso)
-    direccion_virtual = TablaDireccionamiento.localizar(id_proceso, pagina)
     @memoria_real.poner_pagina(id_proceso, pagina)
     direccion_real = TablaDireccionamiento.localizar(dir_virtual, id_proceso)
   end
@@ -66,16 +76,10 @@ class Administrador
     @memoria_virtual.limpiar(id_proceso)
     @memoria_real.limpiar(id_proceso)
     TablaDireccionamiento.limpiar(id_proceso)
-    TablaDireccionamiento.print()
-    puts "@@@ Memorial Real"
-    @memoria_real.print
-    puts "@@@ Memorial Virtual"
-    @memoria_virtual.print
   end
 
   # accion de 'E' de terminar el programa
   def self.terminar(opciones)
-    exit
   end
   
   # Encuentra el primer proceso que entró a memoria real
@@ -101,11 +105,13 @@ class Administrador
 
   # aumenta los swap_ins de ese proceso
   def self.agregar_swap_in(id_proceso)
+    puts "Agrege SwIn a #{id_proceso}"
     @swap_ins[id_proceso] += 1
   end
 
   # aumenta los swap_outs de ese proceso
   def self.agregar_swap_out(id_proceso)
+    puts "Agrege SwOut a #{id_proceso}"
     @swap_outs[id_proceso] += 1
   end
 

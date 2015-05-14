@@ -1,3 +1,5 @@
+begin_time = Time.now
+
 require_relative "administrador"
 
 # hash que tiene las acciones permitidas y como valor el tamaño maximo
@@ -50,10 +52,11 @@ end
 #------------------------------------ MAIN ------------------------------------#
 
 # Se lee el archivo y se corren las funciones principales
-input_file = File.new("prueba.txt", "r")
+input_file = File.new("input.txt", "r")
 if input_file
   input_file.each_with_index do |line, i|
-    # line[0] = '' if i == 0 # arregla bug
+    line[0] = '' if i == 0 # arregla bug
+    puts line
     accion = parse_action(line.chomp)
     if !!accion
       # Esta línea manda a llamar el método adecuado de la clase administrador
@@ -69,3 +72,6 @@ else
   puts "No encontré el archivo..."
 end
 input_file.close
+
+finish_time = Time.now
+puts "TIEMPO DE EJECUCION = #{(finish_time - begin_time)*1000} ms"

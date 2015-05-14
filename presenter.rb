@@ -6,8 +6,10 @@ class Presenter
   def self.print_page_faults
     page_faults = Administrador.get_page_faults
     puts "Page faults:"
-    page_faults.each do |k,v|
-      print "Proceso #{k}: #{v}\n"
+    unless page_faults.empty?
+      page_faults.each do |k,v|
+        print "Proceso #{k}: #{v}\n"
+      end
     end
     puts # este comando imprime un newline char
   end
@@ -18,14 +20,22 @@ class Presenter
     swap_outs = Administrador.get_swap_outs
 
     puts "Swap ins:"
-    swap_ins.each do |k,v|
-      print "Proceso #{k}: #{v}\n"
+    unless swap_ins.empty?
+      swap_ins.each do |k,v|
+        print "Proceso #{k}: #{v}\n"
+      end
+    else
+      puts "No hay..."
     end
 
     puts
     puts "Swap outs:"
-    swap_outs.each do |k,v|
-      print "Proceso #{k}: #{v}\n"
+    unless swap_outs.empty?
+      swap_outs.each do |k,v|
+        print "Proceso #{k}: #{v}\n"
+      end
+    else
+      puts "No hay..."
     end
     puts
   end

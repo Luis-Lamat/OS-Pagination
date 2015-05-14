@@ -38,9 +38,9 @@ class MemoriaReal < Memoria
   def poner_pagina(id_proceso, indice_pagina)
     @marcos.each_with_index do |marco, index|
       if esta_disponible?(marco)
-        @marcos[index] = Pagina.new(id, indice_pagina)          
+        @marcos[index] = Pagina.new(id_proceso, indice_pagina)          
         @marcos_libres -= 1
-        TablaDireccionamiento.insertar(id, indice_pagina, index)        
+        TablaDireccionamiento.insertar_real(id_proceso, indice_pagina, index)        
       end 
     end
     swap(id_proceso, indice_pagina) 
@@ -53,13 +53,19 @@ class MemoriaReal < Memoria
   def swap(id_proceso, id_pagina_a_poner)
     # puts "entre con pid: #{id_proceso} y pagina #{id_pagina_a_poner}"
     p_info = Administrador.find_first_in
-    TablaDireccionamiento.borrar_pagina(p_info["id_proceso"], 
-                                        p_info["id_pagina"])
+    
     @marcos.each_with_index do |marco, i|
       unless esta_disponible?(marco)
         if marco.pid == p_info["id_proceso"] && marco.index == p_info["id_pagina"]
           @marcos[i] = Pagina.new(id_proceso, id_pagina_a_poner)
+          ubicacion_de_reemplazada = TablaDireccionamiento.localizar_vir(p_info['id_proceso'], p_info['id_pagina'])
+
+          puts "pagina #{p_info['id_pagina']} del proceso #{p_info['id_proceso']} se movio a la página virtual #{ubicacion_de_reemplazada / 8}"
+          TablaDireccionamiento.borrar_pagina(p_info["id_proceso"], 
+                                        p_info["id_pagina"])
           TablaDireccionamiento.insertar_real(id_proceso, id_pagina_a_poner, i)
+
+
           Administrador.agregar_swap_in(id_proceso)
           Administrador.agregar_swap_out(p_info["id_proceso"])
           return

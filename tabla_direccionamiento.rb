@@ -18,6 +18,7 @@ class TablaDireccionamiento
 	def self.localizar_vir(id_proceso, indice_pagina)
 		@registros_virtuales.each_with_index do |registro, i|
 			if registro != nil
+				# puts "entro"	
 				if registro["pid"] == id_proceso && registro["pagina"] == indice_pagina
 					return i * 8
 				end
@@ -36,14 +37,27 @@ class TablaDireccionamiento
 				puts "registro: #{i} :: #{registro}"
 			end
 		end
-		
+	end
+
+	def self.desplegar_virtual
+		@registros_reales.each_with_index do |registro, i|
+			dir_real = i * 8
+			if registro != nil
+				dir_vir = localizar_vir(registro["pid"], registro["pagina"])
+				puts "registro: #{i} :: pid: #{registro['pid']}, pagina: #{registro['pagina']}, dir_real: #{dir_real}, dir_vir: #{dir_vir}"
+			else
+				puts "registro: #{i} :: #{registro}"
+			end
+		end
 	end
 	
 	def self.localizar(dir_virtual, id_proceso)
 		pagina = (dir_virtual.to_f / 8).floor
 		@registros_reales.each_with_index do |registro, i|
-			if registro["pid"] == id_proceso && registro["pagina"] == pagina
-				return i * 8 
+			if registro
+				if registro["pid"] == id_proceso && registro["pagina"] == pagina
+					return i * 8 
+				end
 			end
 		end
 		return nil		
