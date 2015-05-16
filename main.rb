@@ -52,10 +52,10 @@ end
 #------------------------------------ MAIN ------------------------------------#
 
 # Se lee el archivo y se corren las funciones principales
-input_file = File.new("prueba.txt", "r")
+input_file = File.new("input.txt", "r")
 if input_file
   input_file.each_with_index do |line, i|
-    # line[0] = '' if i == 0 # arregla bug
+    line[0] = '' if i == 0 # arregla bug
     puts line
     accion = parse_action(line.chomp)
     if !!accion

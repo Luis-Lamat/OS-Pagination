@@ -50,7 +50,7 @@ class Administrador
 
     # imprime que procesos se pusieron
     print "Se asignaron los siguientes marcos al proceso #{id_proceso}: "
-    print respuesta.inspect
+    print_rangos(respuesta)
     puts
   end
   
@@ -162,6 +162,36 @@ class Administrador
       bytes_por_pagina: 8,
       numero_de_marcos: 512    
     })
+  end
+
+  def self.print_rangos(array)
+    # rangos    = []
+    # first     = 0
+    # # index     = 1
+    # array.each_with_index do |num, i|
+    #   if i < array.size - 1
+    #     if array[i+1] - array[i] > 1
+
+    #       rangos << "#{array[first]}-#{array[i]}"
+    #       first = i
+    #     end
+    #   end
+    # end
+
+    # if rangos.size < 1
+    #   rangos << "#{array[first]}-#{array[-1]}"
+    # end
+
+    print array.inspect
+    # first_num = array[0]
+    # past_num  = array[0]
+    # array.each do |element|
+    #   if element - past_num > 1
+    #     rangos << "[#{first_num} - #{past_num}]"
+    #     first_num = element
+    #   end
+    #   past_num = element
+    # end
   end
 
   # aumenta los swap_ins de ese proceso

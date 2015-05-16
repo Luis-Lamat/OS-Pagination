@@ -45,15 +45,22 @@ class Presenter
   # imprime todos los turnarounds de los procesos y el promedio
   def self.print_turnaround_times
     turn_arounds = Administrador.get_turn_arounds
-
+    suma = 0
     puts "Turnarounds"
     unless turn_arounds.empty?
       turn_arounds.each do |k,v|
-        puts "Proceso #{k}: #{v.to_f}"
+        puts "Proceso #{k}: #{v * 1000} ms"
+        suma += v * 1000
       end      
     else
       puts "No hay..."
     end
+    if turn_arounds.length > 0
+      promedio = suma / turn_arounds.length
+    else
+      promedio = "No hay..."
+    end 
+    puts "Turnaround Promedio: #{promedio}"
     puts
   end
 

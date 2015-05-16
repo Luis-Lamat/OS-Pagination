@@ -24,7 +24,7 @@ def limpiar(id_proceso)
       marcos_liberados << i
     end
   end
-  print marcos_liberados.inspect unless marcos_liberados.empty?
+  Administrador.print_rangos(marcos_liberados) unless marcos_liberados.empty?
   puts
 end
 
